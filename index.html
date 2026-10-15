@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>DCAI 300-640 | Study Progress Dashboard</title>
+<style>
+:root { --bg:#f4f6fa; --surface:#fff; --surface2:#f7f9fc; --ink:#18253b; --text:#4b5a71; --muted:#7a8799; --line:#e1e7ef; --blue:#3265df; --blue-soft:#ebf1ff; --mint:#0b947f; --mint-soft:#e9f7f3; --amber:#b87b1b; --amber-soft:#fff5df; --red:#c95360; --red-soft:#ffecf0; --aside:#122542; --asidetext:#8dabc9; --shadow:0 16px 50px rgba(34,55,87,.035); --font:Inter,"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace; }
+:root[data-theme="dark"] {color-scheme:dark; --bg:#0e1725; --surface:#162236; --surface2:#1a2a41; --ink:#f0f5ff; --text:#bdc8dc; --muted:#8294b0; --line:#2c3d56; --blue:#85a8ff; --blue-soft:#24385f; --mint:#6ce1c2; --mint-soft:#184c45; --amber:#f6c770; --amber-soft:#493a24; --red:#ff8791; --red-soft:#502a38; --aside:#091222; --asidetext:#889cba; --shadow:none; }
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:var(--font);color:var(--ink);font-size:14px;line-height:1.52} button,input,select,textarea{font:inherit} button{cursor:pointer} button:disabled{opacity:.45;cursor:not-allowed} a{color:inherit} .app{min-height:100vh;display:grid;grid-template-columns:242px minmax(0,1fr)}
+.sidebar{background:var(--aside);color:#fff;position:sticky;top:0;height:100vh;padding:31px 18px;display:flex;flex-direction:column;gap:30px;z-index:9} .brand{padding:0 12px;display:flex;gap:12px;align-items:center} .logo{width:39px;height:39px;display:grid;place-items:center;border-radius:11px;color:white;background:#356cf3;box-shadow:0 8px 20px rgba(18,52,136,.3);font-weight:850;letter-spacing:-2px;font-size:17px} .brand strong{display:block;font-weight:800;letter-spacing:.025em;font-size:15px}.brand small{color:var(--asidetext);font-size:10px;letter-spacing:.10em;font-weight:750}
+.navlabel{color:#6d86a6;letter-spacing:.15em;font-size:10px;font-weight:750;padding:0 13px;margin-bottom:9px}.nav{display:grid;gap:4px}.nav button{border:0;color:#a9bdd7;background:transparent;padding:12px 13px;text-align:left;border-radius:9px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;width:100%}.nav button svg{width:18px;height:18px;opacity:.8;flex-shrink:0}.nav button:hover{background:#1d3659;color:white}.nav button.active{background:#2c4b7a;color:white;box-shadow:inset 3px 0 #78afff}.sidebar-foot{margin-top:auto;padding:14px 12px;border-top:1px solid #294461;color:#92a9c9}.sidebar-foot b{color:#e6f1ff;display:block;font-size:12px}.sidebar-foot small{display:block;font-size:11px;line-height:1.6;margin-top:6px}
+.workspace{min-width:0;padding:0 36px 54px;max-width:1620px;width:100%;margin:0 auto}.topbar{min-height:82px;display:flex;gap:16px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.crumb{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.015em}.crumb strong{color:var(--ink)}.topactions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:10px 13px;font-size:12px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:background .16s,border-color .16s}.btn:hover{border-color:var(--blue);background:var(--blue-soft)}.btn.primary{background:#3469e7;color:#fff;border-color:#3469e7}.btn.primary:hover{background:#2856c1}.btn.icon{padding:10px;width:37px}.btn svg{width:15px;height:15px}input[type=file]{display:none}.view{display:none}.view.active{display:block}.pagehead{padding:29px 0 19px}.eyebrow{font:750 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}h1{margin:7px 0 7px;letter-spacing:-.045em;line-height:1.11;font-size:clamp(29px,3vw,41px);font-weight:800}h2{margin:0;font-size:18px;letter-spacing:-.025em;font-weight:780}h3{margin:0;font-size:14px;font-weight:740;letter-spacing:-.01em}.subtitle{margin:0;color:var(--text);max-width:760px;font-size:13px;line-height:1.75}.grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin:17px 0}.card{border:1px solid var(--line);background:var(--surface);border-radius:15px;box-shadow:var(--shadow);min-width:0}.pad{padding:20px 22px}.cardtop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:17px}.caption{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.09em}.tag{border-radius:99px;padding:4px 9px;font-size:10px;font-weight:750;background:var(--surface2);color:var(--text);white-space:nowrap}.tag.blue{background:var(--blue-soft);color:var(--blue)}.tag.mint{background:var(--mint-soft);color:var(--mint)}.tag.amber{background:var(--amber-soft);color:var(--amber)}.tag.red{background:var(--red-soft);color:var(--red)}.muted{color:var(--muted)}.small{font-size:12px}.mono{font-family:var(--mono)}
+.hero{background:linear-gradient(115deg,#173c73,#122d55 69%,#153c69);color:#fff;border-radius:18px;min-height:228px;padding:29px 31px;display:grid;grid-template-columns:minmax(0,1fr) 225px;gap:20px;overflow:hidden;position:relative}.hero:before{content:"";position:absolute;width:400px;height:400px;border:1px solid rgba(255,255,255,.12);border-radius:50%;right:-140px;top:-280px;box-shadow:0 0 0 78px rgba(255,255,255,.02),0 0 0 146px rgba(255,255,255,.025)}.hero .eyebrow{color:#9cc3ff}.hero h2{font-size:28px;line-height:1.17;max-width:560px;margin:11px 0 10px;letter-spacing:-.04em}.hero p{max-width:570px;color:#d0dff2;margin:0;font-size:13px}.hero-meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:21px}.hero-meta span{font-size:10px;color:#e2edff;border:1px solid rgba(202,224,255,.22);padding:6px 9px;border-radius:7px;font-weight:680}.hero-ring{position:relative;display:grid;place-items:center;z-index:1}.ring{width:155px;height:155px;transform:rotate(-90deg)}.ring circle{fill:none;stroke-width:12}.ring-track{stroke:rgba(255,255,255,.16)}.ring-progress{stroke:#77d6d3;stroke-linecap:round;stroke-dasharray:0 999;transition:stroke-dasharray .4s}.ring-text{position:absolute;text-align:center}.ring-text b{display:block;font-size:36px;letter-spacing:-.06em;line-height:1.1}.ring-text span{display:block;font-size:10px;color:#d5e4fa;text-transform:uppercase;letter-spacing:.09em}
+.kpi{padding:19px 19px 17px;min-height:125px}.kpi-top{display:flex;gap:8px;align-items:center;justify-content:space-between}.kpi .value{font-size:28px;letter-spacing:-.05em;font-weight:800;line-height:1.25;margin-top:13px}.kpi .description{font-size:11px;color:var(--muted);line-height:1.5}.kpi-ic{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:var(--blue-soft);color:var(--blue)}.kpi-ic svg{width:15px;height:15px}.sections{display:grid;grid-template-columns:minmax(0,1.34fr) minmax(340px,.92fr);gap:16px;margin-bottom:16px}.domain-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.domain-card{padding:16px;border:1px solid var(--line);background:var(--surface2);border-radius:12px;cursor:pointer;transition:border-color .15s}.domain-card:hover{border-color:var(--blue)}.domain-card .hd{display:flex;justify-content:space-between;align-items:center;gap:10px}.domain-num{font:750 12px var(--mono);color:var(--blue)}.domain-card h3{min-height:37px;margin:10px 0;font-size:13px}.progress{height:7px;border-radius:30px;background:var(--line);overflow:hidden}.progress>span{display:block;height:100%;border-radius:30px;background:var(--blue);width:0;transition:width .35s}.domain-foot{display:flex;justify-content:space-between;gap:10px;margin-top:8px;color:var(--muted);font-size:11px}.domain-foot strong{color:var(--ink)}.stat-row{display:grid;grid-template-columns:60px 1fr 41px;gap:10px;align-items:center;margin:15px 0}.stat-row>span{font:700 12px var(--mono);color:var(--muted)}.stat-row small{text-align:right;color:var(--ink);font:700 12px var(--mono)}.stat-row .progress{height:10px}.legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font-size:11px}.dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;background:var(--blue)}
+.action-item{display:flex;align-items:flex-start;gap:11px;border-top:1px solid var(--line);padding:14px 0}.action-item:first-child{border-top:0;padding-top:0}.number{display:grid;place-items:center;width:25px;height:25px;flex:0 0 25px;border-radius:8px;background:var(--blue-soft);color:var(--blue);font:750 11px var(--mono)}.action-item b{display:block;font-size:12px}.action-item .small{margin-top:3px;color:var(--text)}.action-item button{margin-left:auto;font-size:11px;color:var(--blue);border:0;background:none;padding:3px;white-space:nowrap;font-weight:750}.timeline-list{display:grid;gap:0}.timeline-item{display:grid;grid-template-columns:94px 13px 1fr;gap:15px;position:relative;padding:0 0 21px}.timeline-item:last-child{padding-bottom:0}.timeline-date{font:700 11px var(--mono);color:var(--muted);padding-top:3px}.timeline-track{position:relative;display:flex;justify-content:center}.timeline-track:before{content:"";position:absolute;top:10px;bottom:-25px;width:1px;background:var(--line)}.timeline-item:last-child .timeline-track:before{display:none}.timeline-marker{width:11px;height:11px;border:2px solid var(--blue);border-radius:50%;background:var(--surface);position:relative;z-index:1}.timeline-item.done .timeline-marker{background:var(--mint);border-color:var(--mint)}.timeline-item b{font-size:12px}.timeline-item p{color:var(--muted);font-size:11px;margin:3px 0}.timeline-item .tag{display:inline-block;margin-top:4px}
+.filters{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin:19px 0 13px}.field{display:grid;gap:6px;min-width:0}.field label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:750}.field input,.field select,.field textarea,.search{background:var(--surface);border:1px solid var(--line);color:var(--ink);padding:10px 12px;border-radius:8px;min-width:0;outline:none;font-size:12px}.field input:focus,.field select:focus,.field textarea:focus,.search:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}.field textarea{resize:vertical;min-height:92px}.search{flex:1;min-width:210px}.toolbar-end{margin-left:auto;display:flex;gap:8px;align-items:center}.filter-count{font:650 11px var(--mono);color:var(--muted)}
+.blueprint-group{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--surface);margin-bottom:12px}.group-head{display:flex;align-items:center;gap:15px;padding:16px 18px;background:var(--surface2);border-bottom:1px solid var(--line);cursor:pointer}.group-head .domain-num{background:var(--blue-soft);border-radius:7px;padding:7px}.group-name{font-size:13px;font-weight:770;flex:1}.group-count{font-size:11px;color:var(--muted);font-family:var(--mono)}.group-head svg{width:16px;height:16px;transition:transform .2s}.blueprint-group.collapsed .group-head svg{transform:rotate(-90deg)}.blueprint-group.collapsed .group-body{display:none}.subtopic-label{display:flex;justify-content:space-between;gap:10px;padding:13px 17px 10px;border-bottom:1px solid var(--line);align-items:center}.subtopic-label b{font-size:12px}.topic-row{display:grid;grid-template-columns:minmax(0,1fr) 146px 75px;align-items:center;gap:14px;padding:11px 18px;border-bottom:1px solid var(--line)}.topic-row:last-child{border-bottom:0}.topic-label{display:flex;gap:12px;align-items:flex-start;min-width:0}.topic-code{font:700 10px var(--mono);color:var(--blue);min-width:42px;white-space:nowrap;padding-top:2px}.topic-title{font-size:12px;line-height:1.5}.topic-sub{font-size:10px;color:var(--muted);margin-top:2px}.status-select{background:var(--surface2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:11px;width:100%;font-weight:650}.status-select[data-status="done"]{background:var(--mint-soft);color:var(--mint)}.status-select[data-status="studying"]{background:var(--blue-soft);color:var(--blue)}.status-select[data-status="review"]{background:var(--amber-soft);color:var(--amber)}.detail-btn{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:7px;padding:8px 6px;font-size:10px;font-weight:700}.detail-btn:hover{border-color:var(--blue);color:var(--blue)}.empty{padding:36px 20px;text-align:center;color:var(--muted);font-size:12px}.info-strip{font-size:11px;color:var(--text);background:var(--blue-soft);border:1px solid color-mix(in srgb,var(--blue) 13%,transparent);padding:12px 14px;border-radius:9px;line-height:1.7;margin-bottom:15px}
+.road-item{display:grid;grid-template-columns:120px minmax(0,1fr) 140px;gap:20px;padding:22px 0;border-bottom:1px solid var(--line);align-items:start}.road-item:last-child{border-bottom:0}.road-idx{color:var(--blue);font:800 18px var(--mono)}.road-title{font-weight:770;font-size:14px;margin:3px 0 5px}.road-desc{font-size:12px;color:var(--text)}.road-right{display:grid;gap:7px}.road-right input{width:100%}.road-right .status-select{width:100%}.road-origin{font-size:10px;letter-spacing:.05em;color:var(--muted);margin-top:7px}.milestone-box{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px 16px;background:var(--surface2);border:1px solid var(--line);border-radius:11px;margin-bottom:10px}.milestone-box strong{font-size:12px}.milestone-box small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.lab-card{padding:19px;border:1px solid var(--line);background:var(--surface);border-radius:13px;display:grid;gap:12px}.lab-card:hover{border-color:var(--blue)}.lab-code{font:760 10px var(--mono);letter-spacing:.06em;color:var(--blue)}.lab-card h3{line-height:1.5;font-size:14px}.lab-card p{font-size:12px;color:var(--text);margin:0}.lab-card-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--line)}
+.two-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.form-grid .full{grid-column:1/-1}.form-grid .btn{justify-self:start}.data-table{width:100%;border-collapse:collapse}.data-table th{text-align:left;color:var(--muted);text-transform:uppercase;letter-spacing:.075em;font-size:10px;padding:11px;border-bottom:1px solid var(--line)}.data-table td{padding:11px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}.data-table tr:last-child td{border-bottom:0}.scroll{overflow:auto}.delete{background:transparent;border:1px solid var(--line);color:var(--red);padding:5px 9px;border-radius:7px;font-size:11px}.chart-box{min-height:184px;display:grid;place-items:center}.chart-box svg{max-width:100%;width:100%}.plot-note{color:var(--muted);font-size:11px;margin-top:5px}.section-caption{font-size:12px;color:var(--text);margin:-4px 0 18px}.footer{font-size:10px;color:var(--muted);padding:25px 0 8px;border-top:1px solid var(--line);margin-top:23px;line-height:1.8}
+dialog{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:15px;width:min(580px,calc(100vw - 28px));padding:0;box-shadow:0 35px 80px #0004}dialog::backdrop{background:#0d1d34ab;backdrop-filter:blur(3px)}.dialog-head{padding:21px 24px;border-bottom:1px solid var(--line);display:flex;align-items:start;justify-content:space-between;gap:20px}.dialog-body{padding:22px 24px;display:grid;gap:15px}.dialog-foot{border-top:1px solid var(--line);padding:14px 24px;display:flex;justify-content:flex-end;gap:8px}.close{border:0;background:transparent;color:var(--muted);font-size:22px;line-height:1}.floating{position:fixed;bottom:25px;right:23px;background:#183b6d;color:#fff;border-radius:11px;padding:13px 17px;z-index:99;box-shadow:0 14px 34px #061c4470;font-size:12px;font-weight:650;opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .18s,transform .18s}.floating.visible{opacity:1;transform:translateY(0)}.rankbar{display:grid;grid-template-columns:140px 1fr 44px;align-items:center;gap:12px;margin:14px 0;font-size:12px}.rankbar .progress{height:9px}.mini-counter{display:flex;align-items:baseline;gap:10px}.mini-counter strong{font-size:24px;letter-spacing:-.05em}.no-wrap{white-space:nowrap}
+@media(max-width:1100px){.sidebar{width:215px}.app{grid-template-columns:215px minmax(0,1fr)}.workspace{padding:0 22px 40px}.sections{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.app{display:block}.sidebar{position:relative;height:auto;width:100%;padding:12px 15px;gap:14px}.brand{padding:0}.navlabel,.sidebar-foot{display:none}.nav{display:flex;overflow:auto;padding-bottom:3px}.nav button{white-space:nowrap;width:auto;padding:9px 12px;font-size:11px}.nav button svg{width:15px;height:15px}.workspace{padding:0 14px 35px}.topbar{min-height:64px;gap:7px;flex-wrap:wrap;padding:12px 0}.topactions{gap:5px}.btn{padding:9px}.btn .hide-sm{display:none}.hero{grid-template-columns:1fr;padding:23px 20px}.hero-ring{display:none}.hero h2{font-size:26px}.kpis{gap:9px}.kpi{padding:14px;min-height:114px}.kpi .value{font-size:23px}.sections,.two-columns{grid-template-columns:1fr}.domain-grid{gap:8px}.pad{padding:17px}.topic-row{grid-template-columns:minmax(0,1fr) 115px;gap:7px;padding:12px}.topic-row .detail-btn{grid-column:1/-1;justify-self:end;padding:6px 12px}.subtopic-label{padding:12px}.group-head{padding:12px}.group-count{display:none}.road-item{grid-template-columns:52px minmax(0,1fr);gap:10px}.road-right{grid-column:2;grid-template-columns:1fr 1fr}.lab-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:1}.filters .field{flex:1}.rankbar{grid-template-columns:110px 1fr 35px}}
+@media print{.sidebar,.topbar,.btn,.filters,.detail-btn,dialog,.floating{display:none!important}.app{display:block}.workspace{padding:0}.view:not(.active){display:none}.card,.hero{break-inside:avoid;box-shadow:none}.hero{background:#173c73!important;print-color-adjust:exact}}
+
+/* Cloud sync integration (Supabase Auth + revision-protected JSON snapshot) */
+.cloud-status{font-size:11px;color:var(--muted);font-weight:650;max-width:230px;line-height:1.3}
+.cloud-status[data-state="ok"]{color:var(--mint)}
+.cloud-status[data-state="warn"]{color:var(--amber)}
+.cloud-status[data-state="error"]{color:var(--red)}
+.cloud-panel{display:grid;gap:14px;padding:19px 22px 22px}
+.cloud-panel p{margin:0;color:var(--text);font-size:12px;line-height:1.7}
+.cloud-panel .field{max-width:450px}
+.cloud-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.cloud-hint{font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.cloud-account{border:1px solid var(--line);background:var(--surface2);border-radius:9px;padding:12px;font:12px var(--mono);overflow-wrap:anywhere}
+#cloudDialog{width:min(96vw,580px)}
+#cloudConflict[hidden],#cloudLoggedIn[hidden],#cloudLogin[hidden],#cloudNotConfigured[hidden]{display:none}
+@media(max-width:720px){.cloud-status{max-width:none;width:100%;order:2}.topactions{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">DC</div><div><strong>DCAI 300-640</strong><small>STUDY CONTROL CENTER</small></div></div>
+  <div><div class="navlabel">MEU DESENVOLVIMENTO</div><nav class="nav" aria-label="Navegação principal">
+    <button data-view="overview" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="5" rx="1"/><rect x="13" y="10" width="8" height="11" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>Visão geral</button>
+    <button data-view="blueprint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16M4 12h16M4 19h16"/><circle cx="7" cy="5" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/><circle cx="7" cy="19" r="2" fill="currentColor"/></svg>Blueprint oficial</button>
+    <button data-view="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18"/></svg>Cronograma</button>
+    <button data-view="labs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M8 10l3 2-3 2M13 15h4M8 21h8"/></svg>Laboratórios</button>
+    <button data-view="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h12a4 4 0 014 4v12H8a4 4 0 01-4-4V4z"/><path d="M8 4v13M12 9h5M12 13h5"/></svg>Diário & simulados</button>
+  </nav></div>
+  <div class="sidebar-foot"><b>João Victor Santos</b><small>CCNP Data Center → DCAI Specialist<br>Base: blueprint Cisco v1.0 (2025)<br>Progresso local + sincronização opcional</small></div>
+</aside>
+<main class="workspace">
+<header class="topbar"><div class="crumb">MEU PDI <span style="margin:0 8px">/</span> <strong>Preparação para certificação DCAI</strong></div><div class="topactions">
+ <span id="cloudStatus" class="cloud-status" data-state="warn" aria-live="polite">Armazenamento local · nuvem desconectada</span>
+ <button id="cloudBtn" class="btn" type="button" title="Entrar e sincronizar estudos">☁ <span class="hide-sm">Minha nuvem</span></button>
+ <button id="exportBtn" class="btn" title="Exportar backup JSON"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4l4 4 4-4M4 17v4h16v-4"/></svg><span class="hide-sm">Exportar dados</span></button>
+ <button id="importBtn" class="btn" title="Importar backup JSON"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 17V5m-4 4l4-4 4 4M4 18v3h16v-3"/></svg><span class="hide-sm">Importar</span></button><input type="file" id="fileInput" accept=".json,application/json">
+ <button id="themeBtn" class="btn icon" aria-label="Alternar tema" title="Alternar tema">◐</button>
+</div></header>
+
+<section id="view-overview" class="view active">
+  <div class="pagehead"><div class="eyebrow">DEVELOPMENT DASHBOARD / TRACKING 01</div><h1>Seu caminho para o DCAI.</h1><p class="subtitle">Acompanhe seu desenvolvimento técnico para o exame <b>Implementing Cisco Data Center AI Infrastructure (300-640)</b>, com base nos objetivos oficiais e no seu plano de desenvolvimento individual.</p></div>
+  <section class="hero"><div style="position:relative;z-index:1"><div class="eyebrow">CERTIFICATION ROADMAP · CISCO DATA CENTER</div><h2>Da arquitetura de AI aos labs de troubleshooting.</h2><p>Os quatro domínios oficiais orientam o estudo. Cada tópico concluído atualiza a cobertura ponderada da prova.</p><div class="hero-meta"><span>90 MIN DE EXAME</span><span>4 DOMÍNIOS</span><span id="heroLeafCount">45 TÓPICOS MONITORADOS</span><span>BLUEPRINT v1.0</span></div></div><div class="hero-ring"><svg class="ring" viewBox="0 0 160 160" aria-hidden="true"><circle class="ring-track" cx="80" cy="80" r="65"/><circle id="ringProgress" class="ring-progress" cx="80" cy="80" r="65"/></svg><div class="ring-text"><b id="heroPct">0%</b><span>cobertura</span></div></div></section>
+  <div class="grid kpis"><div class="card kpi"><div class="kpi-top"><span class="caption">Cobertura ponderada</span><span class="kpi-ic">◉</span></div><div class="value" id="kWeighted">0%</div><div class="description">Pelos pesos oficiais 20 / 30 / 30 / 20</div></div><div class="card kpi"><div class="kpi-top"><span class="caption">Tópicos concluídos</span><span class="kpi-ic">✓</span></div><div class="value" id="kDone">0 / 45</div><div class="description" id="kStudying">0 em estudo · 0 em revisão</div></div><div class="card kpi"><div class="kpi-top"><span class="caption">Horas registradas</span><span class="kpi-ic">◷</span></div><div class="value" id="kHours">0h</div><div class="description" id="kSessions">Nenhuma sessão registrada</div></div><div class="card kpi"><div class="kpi-top"><span class="caption">Prática / simulados</span><span class="kpi-ic">⌁</span></div><div class="value" id="kLabs">0 / 8</div><div class="description" id="kMocks">Nenhum simulado registrado</div></div></div>
+  <div class="sections"><section class="card pad"><div class="cardtop"><div><h2>Domínios da certificação</h2><div class="small muted">Clique em um domínio para abrir seus objetivos</div></div><span class="tag blue">Blueprint oficial</span></div><div class="domain-grid" id="domainCards"></div></section><section class="card pad"><div class="cardtop"><div><h2>Distribuição do exame</h2><div class="small muted">Peso oficial × tópicos concluídos</div></div><span class="tag">300-640</span></div><div id="weightBars"></div><div class="legend"><span><i class="dot"></i>Cobertura dentro do domínio</span><span>Os pesos são oficiais; a distribuição igual entre subtópicos é um critério de acompanhamento, não de pontuação real.</span></div></section></div>
+  <div class="sections"><section class="card pad"><div class="cardtop"><div><h2>Próximas prioridades</h2><div class="small muted">Sugestões automáticas com base nos tópicos pendentes e nos pesos</div></div><button class="btn" data-goto="blueprint">Ver blueprint →</button></div><div id="priorityList"></div></section><section class="card pad"><div class="cardtop"><div><h2>Marcos do seu PDI</h2><div class="small muted">Datas extraídas do dashboard de desenvolvimento</div></div><button class="btn" data-goto="plan">Cronograma →</button></div><div class="timeline-list" id="pdiMilestones"></div></section></div>
+  <div class="info-strip"><b>Como o progresso é calculado:</b> somente tópicos marcados como <b>Concluído</b> entram no percentual de cobertura. Cada domínio contribui conforme seu peso oficial; dentro do domínio, cada item monitorado tem o mesmo peso. O resultado <b>não</b> representa a nota prevista ou a chance de aprovação no exame.</div>
+</section>
+
+<section id="view-blueprint" class="view">
+<div class="pagehead"><div class="eyebrow">OFFICIAL EXAM OBJECTIVES</div><h1>Blueprint DCAI v1.0</h1><p class="subtitle">Objetivos preservados em inglês, como publicados no documento Cisco 300-640. Seções e subtópicos organizados para acompanhamento individual, com notas e autoavaliação.</p></div>
+<div class="filters"><input id="topicSearch" class="search" type="search" placeholder="Buscar objetivo, código, tecnologia: RoCE, GPU, Intersight..." aria-label="Buscar tópico"><div class="field"><label for="domainFilter">Domínio</label><select id="domainFilter"><option value="">Todos</option></select></div><div class="field"><label for="statusFilter">Status</label><select id="statusFilter"><option value="">Todos</option><option value="todo">Não iniciado</option><option value="studying">Estudando</option><option value="review">Revisar</option><option value="done">Concluído</option></select></div><div class="toolbar-end"><span class="filter-count" id="filterCount"></span><button class="btn" id="clearFilter">Limpar</button></div></div>
+<div class="info-strip">O documento Cisco define as seções <b>1.0 a 4.0</b>, cada uma com objetivos numerados. Itens com letras (por exemplo, <b>3.1.a</b>) são acompanhados separadamente; objetivos sem letras, como <b>2.1</b>, são tratados como um único item. <b>Não iniciado</b> é o estado inicial — não é uma avaliação da sua experiência prévia. O blueprint também cita os cursos <b>DCAIE</b> e <b>DCAIAOT</b> como apoio à preparação.</div>
+<div id="blueprintGroups"></div><div class="empty" id="noTopics" hidden>Nenhum objetivo corresponde aos filtros.</div>
+</section>
+
+<section id="view-plan" class="view">
+<div class="pagehead"><div class="eyebrow">PERSONAL STUDY ROADMAP</div><h1>Cronograma de preparação</h1><p class="subtitle">Planejamento orientativo por fase, integrado aos dois marcos DCAI já presentes no seu PDI. Você pode ajustar as datas e o status de cada etapa.</p></div>
+<div class="sections"><div class="card pad"><div class="cardtop"><h2>Meta de prova</h2><span class="tag blue">Editável</span></div><div class="field"><label for="examDate">Minha data de exame (opcional)</label><input type="date" id="examDate"></div><p class="small muted" style="margin-bottom:0">Seu PDI prevê a tentativa do DCAI entre <b>15/02/2027 e 15/03/2027</b>. Isso é uma janela de planejamento, não uma prova já agendada.</p></div><div class="card pad"><div class="cardtop"><h2>Fases concluídas</h2><span class="tag">Plano de estudo</span></div><div class="mini-counter"><strong id="planCounter">0/8</strong><span class="small muted">etapas concluídas</span></div><div class="progress" style="margin-top:17px;height:10px"><span id="planProgress"></span></div><p class="small muted">Datas e tarefas sugeridas são independentes do conteúdo normativo do blueprint Cisco.</p></div></div>
+<div class="card pad"><div class="cardtop"><div><h2>Trilha de execução</h2><div class="small muted">Datas finais e status salvos no navegador</div></div><span class="tag amber">PDI + plano sugerido</span></div><div id="roadmap"></div></div>
+</section>
+
+<section id="view-labs" class="view">
+<div class="pagehead"><div class="eyebrow">PRACTICAL ENGINEERING</div><h1>Laboratórios de validação</h1><p class="subtitle">Exercícios <b>sugeridos</b> a partir das tecnologias do blueprint, conectando teoria à implementação, monitoramento e troubleshooting. Não são laboratórios oficiais da Cisco.</p></div>
+<div class="sections"><div class="card pad"><div class="cardtop"><h2>Evolução prática</h2><span class="tag mint">Hands-on</span></div><div class="mini-counter"><strong id="labCounter">0/8</strong><span class="small muted">laboratórios validados</span></div><div class="progress" style="margin-top:14px"><span id="labProgress"></span></div><p class="small muted">Use o campo de evidências para anotar outputs, topologia, resultados e próximos ajustes.</p></div><div class="card pad"><div class="cardtop"><h2>Onde praticar</h2><span class="tag">Orientação</span></div><p class="small" style="margin-top:0">CML ou ambiente NX-OS para QoS e monitoramento; Intersight/UCS para políticas de compute; Nexus Dashboard/APIC para orquestração. RoCEv2 e GPUs podem exigir equipamento ou simulador que suporte os recursos.</p><p class="small muted" style="margin-bottom:0">Marque como validado apenas após testar o resultado, e não somente após ler a documentação.</p></div></div>
+<div class="lab-grid" id="labGrid"></div>
+</section>
+
+<section id="view-journal" class="view">
+<div class="pagehead"><div class="eyebrow">EVIDENCE-BASED TRACKING</div><h1>Diário & simulados</h1><p class="subtitle">Registre tempo, assunto, resultados e dificuldades. Todos os lançamentos ficam neste navegador e podem ser preservados pelo botão <b>Exportar dados</b>.</p></div>
+<div class="two-columns"><div class="card pad"><div class="cardtop"><h2>Registrar sessão de estudo</h2><span class="tag blue">Study log</span></div><form id="sessionForm" class="form-grid"><div class="field"><label for="sessionDate">Data</label><input type="date" id="sessionDate" required></div><div class="field"><label for="sessionMinutes">Duração (minutos)</label><input type="number" id="sessionMinutes" min="1" max="1440" value="60" required></div><div class="field full"><label for="sessionDomain">Domínio estudado</label><select id="sessionDomain" required></select></div><div class="field full"><label for="sessionNotes">Anotações / resultado</label><textarea id="sessionNotes" placeholder="Ex.: Ajustei PFC/ECN e validei contadores..." maxlength="2500"></textarea></div><button class="btn primary" type="submit">+ Adicionar sessão</button></form></div><div class="card pad"><div class="cardtop"><h2>Registrar simulado</h2><span class="tag blue">Practice exam</span></div><form id="mockForm" class="form-grid"><div class="field"><label for="mockDate">Data</label><input type="date" id="mockDate" required></div><div class="field"><label for="mockScore">Acertos (%)</label><input type="number" id="mockScore" min="0" max="100" step="0.1" placeholder="Ex.: 72" required></div><div class="field full"><label for="mockNotes">Pontos de atenção</label><textarea id="mockNotes" placeholder="Ex.: revisar 3.2, 4.3, storage policies..." maxlength="2500"></textarea></div><button class="btn primary" type="submit">+ Registrar simulado</button></form></div></div>
+<div class="two-columns" style="margin-top:16px"><section class="card pad"><div class="cardtop"><h2>Tempo dedicado por domínio</h2><span class="tag">Minutos registrados</span></div><div id="timeByDomain"></div></section><section class="card pad"><div class="cardtop"><h2>Evolução nos simulados</h2><span class="tag">Percentual de acertos</span></div><div id="mockChart" class="chart-box"></div><div class="plot-note">Percentual de exercícios respondidos corretamente; não corresponde à escala de pontuação oficial da prova.</div></section></div>
+<div class="two-columns" style="margin-top:16px"><section class="card pad"><div class="cardtop"><h2>Histórico de sessões</h2><span class="tag" id="sessionCount">0 registros</span></div><div class="scroll"><table class="data-table"><thead><tr><th>Data</th><th>Domínio</th><th>Tempo</th><th></th></tr></thead><tbody id="sessionHistory"></tbody></table></div></section><section class="card pad"><div class="cardtop"><h2>Histórico de simulados</h2><span class="tag" id="mockCount">0 registros</span></div><div class="scroll"><table class="data-table"><thead><tr><th>Data</th><th>Acertos</th><th>Notas</th><th></th></tr></thead><tbody id="mockHistory"></tbody></table></div></section></div>
+</section>
+<footer class="footer">Base documental: <b>Implementing Cisco Data Center AI Infrastructure v1.0 (300-640)</b>, Cisco Public, 2025, páginas 1–2; e <b>PDI João Victor Santos Dashboard</b>, plano de 24/09/2026. Objetivos técnicos em inglês reproduzidos do blueprint. Planejamento, laboratórios e recomendações de estudo são sugestões e não exigências oficiais. Seu progresso é salvo localmente e, quando conectado, sincronizado com sua conta Supabase. A sincronização requer configuração inicial; exporte backups periodicamente.</footer>
+</main></div>
+<dialog id="detailDialog" aria-labelledby="detailTitle"><div class="dialog-head"><div><div class="eyebrow" id="detailEyebrow">TÓPICO</div><h2 id="detailTitle" style="margin-top:8px"></h2><div class="small muted" id="detailParent" style="margin-top:5px"></div></div><button id="detailClose" class="close" aria-label="Fechar">×</button></div><form method="dialog" id="detailForm"><div class="dialog-body"><div class="form-grid"><div class="field"><label for="detailStatus">Status</label><select id="detailStatus"><option value="todo">Não iniciado</option><option value="studying">Estudando</option><option value="review">Revisar</option><option value="done">Concluído</option></select></div><div class="field"><label for="detailLevel">Autopercepção de domínio</label><select id="detailLevel"><option value="0">0 · Não avaliado</option><option value="1">1 · Básico</option><option value="2">2 · Intermediário</option><option value="3">3 · Avançado</option><option value="4">4 · Consigo explicar e praticar</option></select></div><div class="field full"><label for="detailNotes">Anotações de estudo / dúvidas</label><textarea id="detailNotes" maxlength="7000" rows="5" placeholder="Conceitos que preciso revisar, comandos, links de documentação, exemplos..." style="min-height:105px"></textarea></div><div class="field full"><label for="detailEvidence">Evidência técnica / lab realizado</label><textarea id="detailEvidence" maxlength="5000" rows="3" placeholder="Topologia, validação, outputs, URL de laboratório, erros resolvidos..."></textarea></div></div></div><div class="dialog-foot"><button id="detailCancel" type="button" class="btn">Cancelar</button><button id="detailSave" type="submit" class="btn primary">Salvar acompanhamento</button></div></form></dialog>
+<dialog id="labDialog" aria-labelledby="labDialogTitle"><div class="dialog-head"><div><div class="eyebrow">LAB EVIDENCE</div><h2 id="labDialogTitle" style="margin-top:8px"></h2></div><button id="labClose" class="close" aria-label="Fechar">×</button></div><form method="dialog" id="labForm"><div class="dialog-body"><div class="field"><label for="labStatus">Status do laboratório</label><select id="labStatus"><option value="todo">Não iniciado</option><option value="studying">Em execução</option><option value="done">Validado</option></select></div><div class="field"><label for="labNotes">Evidências, procedimentos e resultados</label><textarea id="labNotes" maxlength="6000" rows="6" placeholder="O que foi configurado, comandos de verificação, problemas encontrados..."></textarea></div></div><div class="dialog-foot"><button type="button" id="labCancel" class="btn">Cancelar</button><button type="submit" class="btn primary">Salvar laboratório</button></div></form></dialog>
+
+<dialog id="cloudDialog" aria-labelledby="cloudTitle">
+ <div class="dialog-head"><div><div class="eyebrow">CLOUD SYNC · SUPABASE</div><h2 id="cloudTitle" style="margin-top:7px">Sincronização dos estudos</h2></div><button class="close" type="button" id="cloudClose" aria-label="Fechar">×</button></div>
+ <div class="cloud-panel">
+  <div id="cloudNotConfigured" hidden><p>Para habilitar a nuvem, configure <code>SUPABASE_URL</code> e <code>SUPABASE_PUBLISHABLE_KEY</code> no <code>index.html</code> publicado no GitHub. Nunca utilize uma <code>secret</code> ou <code>service_role</code> key aqui.</p><p class="cloud-hint">Enquanto isso, o acompanhamento permanece disponível no navegador atual.</p></div>
+  <form id="cloudLogin" hidden><p>Entre com seu e-mail. O Supabase enviará um link de acesso; não é necessário criar senha. Abra o link no mesmo navegador para concluir o login.</p><div class="field" style="margin-top:12px"><label for="cloudEmail">E-mail</label><input id="cloudEmail" type="email" autocomplete="email" required placeholder="seu-email@exemplo.com"></div><div class="cloud-actions"><button class="btn primary" type="submit" id="cloudSendLink">Enviar link de acesso</button></div><p id="cloudLoginMessage" class="cloud-hint" role="status"></p></form>
+  <div id="cloudLoggedIn" hidden><p>Conta conectada:</p><div class="cloud-account" id="cloudAccount"></div><p id="cloudAccountMessage">O progresso pode ser sincronizado quando houver conexão com a internet.</p><div class="cloud-actions"><button class="btn primary" type="button" id="cloudSyncNow">Sincronizar agora</button><button class="btn" type="button" id="cloudLogout">Sair da conta</button></div></div>
+  <div id="cloudConflict" hidden><h3>Encontramos dois progressos diferentes</h3><p>Há registros no navegador e na nuvem. Para não substituir os dados sem sua permissão, escolha qual versão deseja manter. Recomendamos exportar um backup JSON antes de substituir qualquer versão.</p><div class="cloud-actions"><button class="btn primary" type="button" id="cloudKeepRemote">Usar progresso da nuvem</button><button class="btn" type="button" id="cloudKeepLocal">Enviar progresso deste navegador</button></div><p class="cloud-hint">A substituição escolhida valerá para toda a dashboard (tópicos, labs, diário e simulados). Não mescla automaticamente os registros.</p></div>
+ </div>
+</dialog>
+<div id="toast" class="floating" role="status" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script>
+'use strict';
+
+// Configure somente estas duas propriedades para conectar o projeto Supabase.
+// PROJECT URL e publishable key sao PUBLICAS. Nunca cole secret / service_role aqui.
+const SUPABASE_URL = 'https://ldhuihuhzrxtsuwcmypn.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_MqRGgBBQQwNgLB21TfTf8w_0Zbz2yZw';
+const CLOUD_TABLE = 'dcai_progress';
+const CLOUD_SYNC_META_KEY = 'dcai-dashboard-sync-metadata-v1';
+
+// Official Cisco 300-640 DCAI v1.0 blueprint (pages 1–2, November 2025)
+const BLUEPRINT = [
+ {id:'1.0', short:'Fundamentos de AI', name:'AI Fundamentals and Applications', weight:20, sections:[
+  {id:'1.1',name:'Describe AI/ML workload types',subs:[['1.1.a','RAG'],['1.1.b','Training'],['1.1.c','Inference'],['1.1.d','Generative AI']]},
+  {id:'1.2',name:'Describe the AI lifecycle'},
+  {id:'1.3',name:'Describe AI use cases'},
+  {id:'1.4',name:'Describe the types of AI infrastructure',subs:[['1.4.a','Cloud'],['1.4.b','Hybrid'],['1.4.c','On-premises'],['1.4.d','Edge AI']]},
+  {id:'1.5',name:'Describe the components used for AI environments',subs:[['1.5.a','Network'],['1.5.b','Compute and GPUs deployment (NVLink)'],['1.5.c','Virtualization and containerization'],['1.5.d','Orchestration'],['1.5.e','Monitoring'],['1.5.f','Storage such as SAN, Fibre Channel, NVMe, Block and File']]},
+  {id:'1.6',name:'Describe Cisco AI solutions',subs:[['1.6.a','AI PODs'],['1.6.b','AI Canvas'],['1.6.c','Hyperfabric AI']]}
+ ]},
+ {id:'2.0', short:'Arquitetura AI',name:'AI Infrastructure Components and Architecture',weight:30,sections:[
+  {id:'2.1',name:'Evaluate network deployment based on AI workload requirements such as bandwidth, latency, redundancy, scalability, and security'},
+  {id:'2.2',name:'Evaluate compute deployment based on AI workload requirements such as CPU resources, GPU resources and connectivity, memory, virtualization support, scalability, redundancy, and workload types'},
+  {id:'2.3',name:'Evaluate storage deployment based on AI workload requirements such as capacity, performance, redundancy and availability, and scalability'},
+  {id:'2.4',name:'Evaluate power, efficiency, and sustainability based on AI workload requirements such as power and cooling, power usage effectiveness, and renewable energy'},
+  {id:'2.5',name:'Evaluate hybrid AI deployment with cloud integration such as secure connectivity, data synchronization, and workload mobility'}
+ ]},
+ {id:'3.0',short:'Deployment & Data',name:'AI Infrastructure Deployment and Data Management',weight:30,sections:[
+  {id:'3.1',name:'Configure high-performance networks to support AI workloads using Cisco Data Center',subs:[['3.1.a','Congestion control mechanisms (PFC, ECN, ETS)'],['3.1.b','RDMA over Converged Ethernet (RoCE, RoCEv2)'],['3.1.c','Quality of service (QoS)'],['3.1.d','Load distribution']]},
+  {id:'3.2',name:'Configure high-performance compute and storage to support AI workloads using Cisco UCS',subs:[['3.2.a','Domain profiles'],['3.2.b','Power policy'],['3.2.c','Storage policies'],['3.2.d','LAN connectivity and vNIC policies'],['3.2.e','QoS policies and system classes'],['3.2.f','NTP policy']]},
+  {id:'3.3',name:'Deploy AI-ready fabrics using Cisco orchestration tools',subs:[['3.3.a','Nexus Dashboard'],['3.3.b','APIC'],['3.3.c','Hyperfabric'],['3.3.d','Intersight']]}
+ ]},
+ {id:'4.0',short:'Operações & TSHOOT',name:'AI Infrastructure Operations and Troubleshooting',weight:20,sections:[
+  {id:'4.1',name:'Implement benchmarks to evaluate AI infrastructure performance'},
+  {id:'4.2',name:'Implement monitoring of AI data center infrastructures using Cisco solutions such as Nexus Dashboard and Intersight'},
+  {id:'4.3',name:'Monitor AI infrastructure using system messages and management tools to ensure reliability, scalability and performance',subs:[['4.3.a','Operational telemetry'],['4.3.b','System health'],['4.3.c','Alerts'],['4.3.d','Log correlation']]},
+  {id:'4.4',name:'Troubleshoot AI infrastructure using system messages and management tools'}
+ ]}
+];
+const TOPICS = BLUEPRINT.flatMap(d=>d.sections.flatMap(s=>(s.subs || [[s.id,s.name]]).map(([id,label])=>({id,label,parent:s.name,section:s.id,domain:d.id,domainName:d.name}))));
+const TOPIC_BY_ID=Object.fromEntries(TOPICS.map(t=>[t.id,t]));
+const DOMAIN_BY_ID=Object.fromEntries(BLUEPRINT.map(d=>[d.id,d]));
+const LABS=[
+ {id:'L01',domain:'3.0',refs:'3.1.a · 3.1.c',name:'Congestion control e QoS para tráfego de AI',desc:'Planejar classes, configurar PFC/ECN/ETS quando suportado e validar filas, drops e counters.'},
+ {id:'L02',domain:'3.0',refs:'3.1.b',name:'Fluxos RDMA: RoCE e RoCEv2',desc:'Documentar os requisitos da rede Ethernet, validar a conectividade e observar comportamento com congestionamento.'},
+ {id:'L03',domain:'3.0',refs:'3.1.d',name:'Distribuição de carga na fabric',desc:'Comparar políticas de distribuição e evidenciar o uso dos caminhos disponíveis.'},
+ {id:'L04',domain:'3.0',refs:'3.2.a–3.2.f',name:'UCS / Intersight: perfis e políticas',desc:'Criar ou revisar domain profile, power, storage, vNIC, QoS e NTP; verificar aplicação e compliance.'},
+ {id:'L05',domain:'3.0',refs:'3.3.a–3.3.d',name:'AI-ready fabrics e orquestração',desc:'Navegar por Nexus Dashboard, APIC, Hyperfabric e Intersight conforme acesso ao ambiente; evidenciar o fluxo de provisionamento.'},
+ {id:'L06',domain:'2.0',refs:'2.1–2.5',name:'Workshop de sizing de AI infrastructure',desc:'Comparar rede, GPUs/CPU, storage, redundância, PUE e integração híbrida para um cenário de workload.'},
+ {id:'L07',domain:'4.0',refs:'4.1–4.3',name:'Observabilidade, benchmarks e telemetria',desc:'Registrar baseline de desempenho, coletar system health, alertas e logs e correlacionar eventos.'},
+ {id:'L08',domain:'4.0',refs:'4.4',name:'Troubleshooting orientado a falhas',desc:'Inserir ou reproduzir uma falha controlada, identificar causa com ferramentas de gestão e comprovar a correção.'}
+];
+const PLAN=[
+ {id:'R0',title:'Diagnóstico inicial e setup',desc:'Ler o blueprint completo, classificar conhecimentos e identificar labs disponíveis.',date:'2026-10-31',origin:'Plano sugerido',domain:'1.0'},
+ {id:'R1',title:'Fundamentos, ciclo de AI e soluções Cisco',desc:'Cobrir o domínio 1.0: workloads, ciclo, modalidades de implantação, infraestrutura e AI PODs.',date:'2026-11-30',origin:'Plano sugerido',domain:'1.0'},
+ {id:'R2',title:'Arquitetura: rede, GPU, storage, energia e híbrido',desc:'Cobrir os objetivos 2.1 a 2.5 e documentar um exercício de sizing.',date:'2026-12-31',origin:'Plano sugerido',domain:'2.0'},
+ {id:'R3',title:'Deployment: QoS, RoCEv2, UCS e orquestração',desc:'Priorizar o domínio 3.0 e validar políticas e equipamentos quando disponíveis.',date:'2027-01-31',origin:'Plano sugerido',domain:'3.0'},
+ {id:'A1',title:'Finalizar learning path DCAIE no Cisco U.',desc:'Atividade prevista no PDI: 01/12/2026 a 15/02/2027.',date:'2027-02-15',origin:'PDI original',domain:'1.0'},
+ {id:'R4',title:'Operações e troubleshooting de AI infrastructure',desc:'Cobrir o domínio 4.0 com benchmarking, monitoramento e correlação de logs.',date:'2027-02-20',origin:'Plano sugerido',domain:'4.0'},
+ {id:'R5',title:'Simulados, revisão de gaps e consolidação',desc:'Priorizar os objetivos pendentes e registrar resultados em sessões e simulados.',date:'2027-03-10',origin:'Plano sugerido',domain:'4.0'},
+ {id:'A2',title:'Certificação Cisco 300-640 DCAI',desc:'Marco do PDI: janela prevista entre 15/02/2027 e 15/03/2027.',date:'2027-03-15',origin:'PDI original',domain:'3.0'}
+];
+const KEY='joao-dcai-study-dashboard-v1';
+const initial=()=>({version:1,topics:{},labs:{},plan:{},sessions:[],mocks:[],examDate:'',theme:'light'});
+let state=initial();
+try{const stored=JSON.parse(localStorage.getItem(KEY)||'null');if(stored&&typeof stored==='object'&&!Array.isArray(stored)) state={...initial(),...stored};}catch(e){}
+const $=id=>document.getElementById(id);
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shortDate=s=>{if(!s||!/^\d{4}-\d\d-\d\d$/.test(s))return 'Sem data';const [y,m,d]=s.split('-');return `${d}/${m}/${y}`;};
+const localDay=()=>{let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
+const pct=n=>`${Number((n||0).toFixed(1))}%`;
+const fmtHours=mins=>`${Number((mins/60).toFixed(1))}h`;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){toast('Não foi possível salvar localmente. Exporte um backup.',true);}queueCloudSave();};
+const sTopic=id=>({status:'todo',level:0,notes:'',evidence:'',...(state.topics?.[id]||{})});
+const sLab=id=>({status:'todo',notes:'',...(state.labs?.[id]||{})});
+const sPlan=id=>({status:'todo',...(state.plan?.[id]||{})});
+const statuses={todo:'Não iniciado',studying:'Estudando',review:'Revisar',done:'Concluído'};
+let activeView='overview',detailId=null,labId=null,collapsed=new Set();
+function toast(msg,problem=false){const t=$('toast');t.textContent=msg;t.style.background=problem?'#9e3e49':'#183b6d';t.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('visible'),2700);}
+function metrics(){const domains=BLUEPRINT.map(d=>{const items=TOPICS.filter(t=>t.domain===d.id);const done=items.filter(t=>sTopic(t.id).status==='done').length;const studying=items.filter(t=>sTopic(t.id).status==='studying').length;const review=items.filter(t=>sTopic(t.id).status==='review').length;return {...d,total:items.length,done,studying,review,coverage:done/items.length*100};});const complete=domains.reduce((x,d)=>x+d.done,0);const studying=domains.reduce((x,d)=>x+d.studying,0);const review=domains.reduce((x,d)=>x+d.review,0);const weighted=domains.reduce((x,d)=>x+d.weight*d.done/d.total,0);return {domains,complete,studying,review,weighted};}
+function go(view){activeView=view;document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===`view-${view}`));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===view));window.scrollTo({top:0,behavior:'smooth'});}
+function openTopic(id){const t=TOPIC_BY_ID[id];if(!t)return;detailId=id;const s=sTopic(id);$('detailEyebrow').textContent=`OBJETIVO ${t.id} · DOMÍNIO ${t.domain}`;$('detailTitle').textContent=t.label;$('detailParent').textContent=t.section!==id?t.parent:DOMAIN_BY_ID[t.domain].name;$('detailStatus').value=s.status;$('detailLevel').value=String(s.level||0);$('detailNotes').value=s.notes||'';$('detailEvidence').value=s.evidence||'';$('detailDialog').showModal();}
+function openLab(id){const l=LABS.find(l=>l.id===id);if(!l)return;labId=id;const s=sLab(id);$('labDialogTitle').textContent=l.name;$('labStatus').value=s.status==='review'?'studying':s.status;$('labNotes').value=s.notes||'';$('labDialog').showModal();}
+function selectMarkup(id,status){return `<select class="status-select" data-topic-select="${id}" data-status="${esc(status)}" aria-label="Status do tópico ${id}">${Object.entries(statuses).map(([key,label])=>`<option value="${key}" ${key===status?'selected':''}>${label}</option>`).join('')}</select>`;}
+function renderOverview(){const m=metrics();const n=TOPICS.length;const totalMins=(state.sessions||[]).reduce((sum,s)=>sum+(+s.minutes||0),0);const labsDone=LABS.filter(l=>sLab(l.id).status==='done').length;
+$('kWeighted').textContent=pct(m.weighted);$('kDone').textContent=`${m.complete} / ${n}`;$('kStudying').textContent=`${m.studying} em estudo · ${m.review} em revisão`;$('kHours').textContent=fmtHours(totalMins);$('kSessions').textContent=`${(state.sessions||[]).length} sessões registradas`;$('kLabs').textContent=`${labsDone} / ${LABS.length}`;$('kMocks').textContent=(state.mocks||[]).length?`${state.mocks.length} simulado(s) · último ${pct(Number(state.mocks[state.mocks.length-1].score))}`:'Nenhum simulado registrado';$('heroPct').textContent=pct(m.weighted);$('heroLeafCount').textContent=`${n} TÓPICOS MONITORADOS`;
+const c=2*Math.PI*65;$('ringProgress').setAttribute('stroke-dasharray',`${m.weighted/100*c} ${c}`);
+$('domainCards').innerHTML=m.domains.map(d=>`<article class="domain-card" data-domain-go="${d.id}" tabindex="0" role="button" aria-label="Abrir domínio ${d.id}: ${esc(d.name)}"><div class="hd"><span class="domain-num">${d.id}</span><span class="tag blue">${d.weight}% DA PROVA</span></div><h3>${esc(d.name)}</h3><div class="progress"><span style="width:${d.coverage}%"></span></div><div class="domain-foot"><span>${d.done} / ${d.total} tópicos</span><strong>${pct(d.coverage)}</strong></div></article>`).join('');
+$('weightBars').innerHTML=m.domains.map(d=>`<div class="stat-row"><span>${d.id} / ${d.weight}%</span><div class="progress"><span style="width:${d.coverage}%"></span></div><small>${pct(d.coverage)}</small></div>`).join('');
+const priorities=m.domains.map(d=>{const t=TOPICS.find(t=>t.domain===d.id&&sTopic(t.id).status!=='done');return t?{d,t}:null;}).filter(Boolean).sort((a,b)=>(b.d.weight*(1-b.d.done/b.d.total))-(a.d.weight*(1-a.d.done/a.d.total))).slice(0,3);
+$('priorityList').innerHTML=priorities.length?priorities.map((p,i)=>`<div class="action-item"><span class="number">${String(i+1).padStart(2,'0')}</span><div style="min-width:0;flex:1"><b>${esc(p.t.id)} · ${esc(p.t.label)}</b><div class="small">${esc(p.d.short)} · peso ${p.d.weight}% · ${statuses[sTopic(p.t.id).status]}</div></div><button data-open-topic="${p.t.id}">Abrir ↗</button></div>`).join(''):'<div class="empty">Todos os tópicos do blueprint estão concluídos.</div>';
+const pdi=PLAN.filter(x=>x.origin==='PDI original');$('pdiMilestones').innerHTML=pdi.map(p=>`<div class="timeline-item ${sPlan(p.id).status==='done'?'done':''}"><div class="timeline-date">${shortDate(p.id==='A1'?'2026-12-01':'2027-02-15').slice(0,5)}<br>até ${shortDate(sPlan(p.id).date||p.date).slice(0,5)}</div><div class="timeline-track"><div class="timeline-marker"></div></div><div><b>${esc(p.title)}</b><p>${esc(p.desc)}</p><span class="tag ${sPlan(p.id).status==='done'?'mint':'blue'}">${sPlan(p.id).status==='done'?'Concluído':'Previsto no PDI'}</span></div></div>`).join('');}
+function renderBlueprint(){const q=$('topicSearch').value.trim().toLowerCase(), domain=$('domainFilter').value, status=$('statusFilter').value;let count=0,html='';for(const d of BLUEPRINT){if(domain&&d.id!==domain)continue;let children='';let domainCount=0;for(const s of d.sections){const topics=(s.subs||[[s.id,s.name]]).map(([id,label])=>TOPIC_BY_ID[id]).filter(t=>{if(status&&sTopic(t.id).status!==status)return false;return !q||[t.id,t.label,t.parent,t.domainName].join(' ').toLowerCase().includes(q);});if(!topics.length)continue;domainCount+=topics.length;if(s.subs){children+=`<div class="subtopic-label"><b><span class="mono" style="color:var(--blue);margin-right:8px">${s.id}</span>${esc(s.name)}</b><span class="small muted">${topics.length} itens</span></div>`;}children+=topics.map(t=>{const td=sTopic(t.id);return `<div class="topic-row"><div class="topic-label"><span class="topic-code">${t.id}</span><div style="min-width:0"><div class="topic-title">${esc(t.label)}</div>${td.notes||td.evidence?'<div class="topic-sub">✎ Anotações / evidências registradas</div>':''}${td.level?`<div class="topic-sub">Autoavaliação: ${td.level}/4</div>`:''}</div></div>${selectMarkup(t.id,td.status)}<button class="detail-btn" data-open-topic="${t.id}">Detalhes ↗</button></div>`;}).join('');}
+if(!domainCount)continue;count+=domainCount;const full=TOPICS.filter(t=>t.domain===d.id).length;html+=`<article class="blueprint-group ${collapsed.has(d.id)&&!q&&!status?'collapsed':''}" data-group="${d.id}"><div class="group-head" data-collapse="${d.id}" role="button" tabindex="0" aria-label="Expandir ou recolher domínio ${d.id}"><span class="domain-num">${d.id}</span><div class="group-name">${esc(d.name)}</div><span class="tag blue">${d.weight}%</span><span class="group-count">${domainCount} / ${full}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="group-body">${children}</div></article>`;}
+$('blueprintGroups').innerHTML=html;$('noTopics').hidden=Boolean(count);$('filterCount').textContent=`${count} de ${TOPICS.length} tópicos`;
+}
+function renderPlan(){const done=PLAN.filter(p=>sPlan(p.id).status==='done').length;$('planCounter').textContent=`${done}/${PLAN.length}`;$('planProgress').style.width=100*done/PLAN.length+'%';$('examDate').value=state.examDate||'';
+$('roadmap').innerHTML=PLAN.map((p,i)=>{const sp=sPlan(p.id),date=sp.date||p.date,st=sp.status;return `<article class="road-item"><div><div class="road-idx">${String(i+1).padStart(2,'0')}</div><span class="tag ${p.origin==='PDI original'?'blue':''}">${p.origin==='PDI original'?'PDI':'SUGERIDO'}</span></div><div><div class="road-title">${esc(p.title)}</div><div class="road-desc">${esc(p.desc)}</div><div class="road-origin">${p.origin==='PDI original'?'Atividade do documento de referência':'Atividade proposta para organizar a preparação'} · domínio ${p.domain}</div></div><div class="road-right"><div class="field"><label for="road-date-${p.id}">Prazo</label><input type="date" id="road-date-${p.id}" data-plan-date="${p.id}" value="${date}"></div><div class="field"><label for="road-status-${p.id}">Status</label><select id="road-status-${p.id}" class="status-select" data-plan-status="${p.id}" data-status="${st}"><option value="todo" ${st==='todo'?'selected':''}>Não iniciado</option><option value="studying" ${st==='studying'?'selected':''}>Em andamento</option><option value="done" ${st==='done'?'selected':''}>Concluído</option></select></div></div></article>`;}).join('');}
+function renderLabs(){const done=LABS.filter(l=>sLab(l.id).status==='done').length;$('labCounter').textContent=`${done}/${LABS.length}`;$('labProgress').style.width=100*done/LABS.length+'%';$('labGrid').innerHTML=LABS.map(l=>{const s=sLab(l.id);return `<article class="lab-card"><div class="cardtop" style="margin:0"><span class="lab-code">${l.id} / DOMÍNIO ${l.domain}</span><span class="tag ${s.status==='done'?'mint':s.status==='studying'?'blue':''}">${s.status==='done'?'VALIDADO':s.status==='studying'?'EM EXECUÇÃO':'PENDENTE'}</span></div><h3>${esc(l.name)}</h3><p>${esc(l.desc)}</p><div class="small muted">Referência: ${esc(l.refs)}</div><div class="lab-card-foot"><span class="small muted">${s.notes?'✓ Evidência registrada':'Sem evidências registradas'}</span><button class="btn" data-open-lab="${l.id}">Editar lab ↗</button></div></article>`;}).join('');}
+function renderJournal(){const sessions=Array.isArray(state.sessions)?state.sessions:[];const mocks=Array.isArray(state.mocks)?state.mocks:[];$('sessionCount').textContent=`${sessions.length} registros`;$('mockCount').textContent=`${mocks.length} registros`;
+$('sessionHistory').innerHTML=sessions.length?[...sessions].reverse().map(s=>`<tr><td class="mono no-wrap">${shortDate(s.date)}</td><td>${esc(DOMAIN_BY_ID[s.domain]?.short||s.domain)}${s.notes?`<div class="small muted" style="margin-top:4px;max-width:240px;overflow-wrap:anywhere">${esc(s.notes)}</div>`:''}</td><td class="mono">${esc(s.minutes)} min</td><td><button class="delete" data-delete-session="${esc(s.id)}" aria-label="Excluir sessão">×</button></td></tr>`).join(''):'<tr><td colspan="4" class="muted">Ainda não há sessões registradas.</td></tr>';
+$('mockHistory').innerHTML=mocks.length?[...mocks].reverse().map(m=>`<tr><td class="mono no-wrap">${shortDate(m.date)}</td><td class="mono"><b>${pct(+m.score)}</b></td><td style="max-width:250px;overflow-wrap:anywhere">${esc(m.notes||'—')}</td><td><button class="delete" data-delete-mock="${esc(m.id)}" aria-label="Excluir simulado">×</button></td></tr>`).join(''):'<tr><td colspan="4" class="muted">Ainda não há simulados registrados.</td></tr>';
+const byDomain=BLUEPRINT.map(d=>({d,mins:sessions.filter(s=>s.domain===d.id).reduce((sum,s)=>sum+(+s.minutes||0),0)}));const max=Math.max(1,...byDomain.map(r=>r.mins));$('timeByDomain').innerHTML=byDomain.map(({d,mins})=>`<div class="rankbar"><span>${esc(d.short)}</span><div class="progress"><span style="width:${mins/max*100}%"></span></div><strong class="mono" style="text-align:right;font-size:11px">${fmtHours(mins)}</strong></div>`).join('')+`<div class="plot-note">Total registrado: ${fmtHours(byDomain.reduce((s,r)=>s+r.mins,0))}</div>`;
+if(!mocks.length){$('mockChart').innerHTML='<div class="empty">O gráfico será exibido após você registrar seu primeiro simulado.</div>';return;}
+const list=[...mocks].sort((a,b)=>a.date.localeCompare(b.date)), width=510,height=205,pad={left:39,right:23,top:14,bottom:37},x=i=>pad.left+(list.length===1?(width-pad.left-pad.right)/2:i*(width-pad.left-pad.right)/(list.length-1)),y=v=>height-pad.bottom-v/100*(height-pad.top-pad.bottom);let svg=`<svg role="img" aria-label="Evolução dos acertos em simulados" viewBox="0 0 ${width} ${height}" style="overflow:visible">`;
+for(let n=0;n<=100;n+=25){svg+=`<line x1="${pad.left}" x2="${width-pad.right}" y1="${y(n)}" y2="${y(n)}" stroke="var(--line)"/><text x="${pad.left-9}" y="${y(n)+4}" fill="var(--muted)" text-anchor="end" font-size="11">${n}</text>`;}
+if(list.length>1){svg+=`<polyline points="${list.map((r,i)=>`${x(i)},${y(Math.min(100,Math.max(0,+r.score)))}`).join(' ')}" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;}
+list.forEach((r,i)=>{svg+=`<circle cx="${x(i)}" cy="${y(+r.score)}" r="5" stroke="var(--surface)" stroke-width="2" fill="var(--blue)"><title>${shortDate(r.date)} · ${pct(+r.score)}</title></circle>`;if(i===0||i===list.length-1||list.length<=4)svg+=`<text x="${x(i)}" y="${height-12}" text-anchor="middle" fill="var(--muted)" font-size="11">${shortDate(r.date).slice(0,5)}</text>`;});svg+='</svg>';$('mockChart').innerHTML=svg;
+}
+function renderAll(){renderOverview();renderBlueprint();renderPlan();renderLabs();renderJournal();}
+function applyTheme(){document.documentElement.setAttribute('data-theme',state.theme==='dark'?'dark':'light');$('themeBtn').textContent=state.theme==='dark'?'☀':'◐';}
+
+// Navigation and event delegation
+for(const d of BLUEPRINT){$('domainFilter').insertAdjacentHTML('beforeend',`<option value="${d.id}">${d.id} · ${esc(d.short)}</option>`);$('sessionDomain').insertAdjacentHTML('beforeend',`<option value="${d.id}">${d.id} · ${esc(d.name)}</option>`);}
+$('sessionDate').value=localDay();$('mockDate').value=localDay();
+document.addEventListener('click',e=>{const nav=e.target.closest('[data-view]');if(nav){go(nav.dataset.view);return;}const link=e.target.closest('[data-goto]');if(link){go(link.dataset.goto);return;}const domain=e.target.closest('[data-domain-go]');if(domain){$('domainFilter').value=domain.dataset.domainGo;$('statusFilter').value='';$('topicSearch').value='';go('blueprint');renderBlueprint();return;}const open=e.target.closest('[data-open-topic]');if(open){go('blueprint');openTopic(open.dataset.openTopic);return;}const lab=e.target.closest('[data-open-lab]');if(lab){openLab(lab.dataset.openLab);return;}const collapse=e.target.closest('[data-collapse]');if(collapse){const id=collapse.dataset.collapse;collapsed.has(id)?collapsed.delete(id):collapsed.add(id);renderBlueprint();return;}
+const ds=e.target.closest('[data-delete-session]');if(ds){if(confirm('Excluir esta sessão de estudo?')){state.sessions=state.sessions.filter(x=>x.id!==ds.dataset.deleteSession);save();renderAll();toast('Sessão excluída.');}return;}const dm=e.target.closest('[data-delete-mock]');if(dm){if(confirm('Excluir este resultado de simulado?')){state.mocks=state.mocks.filter(x=>x.id!==dm.dataset.deleteMock);save();renderAll();toast('Simulado excluído.');}return;}});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-domain-go], [data-collapse]')){e.preventDefault();e.target.click();}});
+$('topicSearch').addEventListener('input',renderBlueprint);$('domainFilter').addEventListener('change',renderBlueprint);$('statusFilter').addEventListener('change',renderBlueprint);$('clearFilter').addEventListener('click',()=>{$('topicSearch').value='';$('domainFilter').value='';$('statusFilter').value='';collapsed.clear();renderBlueprint();});
+document.addEventListener('change',e=>{const t=e.target;if(t.matches('[data-topic-select]')){const id=t.dataset.topicSelect;state.topics[id]={...sTopic(id),status:t.value};save();renderAll();toast(`${id} · ${statuses[t.value]}`);}if(t.matches('[data-plan-status]')){const id=t.dataset.planStatus;state.plan[id]={...sPlan(id),status:t.value};save();renderAll();toast('Etapa atualizada.');}if(t.matches('[data-plan-date]')){const id=t.dataset.planDate;state.plan[id]={...sPlan(id),date:t.value};save();renderOverview();toast('Prazo atualizado.');}});
+$('examDate').addEventListener('change',e=>{state.examDate=e.target.value;save();toast('Data pessoal de prova salva.');});
+$('detailClose').addEventListener('click',()=>$('detailDialog').close());$('detailCancel').addEventListener('click',()=>$('detailDialog').close());$('detailForm').addEventListener('submit',e=>{e.preventDefault();if(!detailId)return;state.topics[detailId]={status:$('detailStatus').value,level:+$('detailLevel').value,notes:$('detailNotes').value.trim(),evidence:$('detailEvidence').value.trim()};save();$('detailDialog').close();renderAll();toast(`Tópico ${detailId} salvo.`);});
+$('labClose').addEventListener('click',()=>$('labDialog').close());$('labCancel').addEventListener('click',()=>$('labDialog').close());$('labForm').addEventListener('submit',e=>{e.preventDefault();if(!labId)return;state.labs[labId]={status:$('labStatus').value,notes:$('labNotes').value.trim()};save();$('labDialog').close();renderAll();toast(`Lab ${labId} atualizado.`);});
+$('sessionForm').addEventListener('submit',e=>{e.preventDefault();const date=$('sessionDate').value,minutes=Number($('sessionMinutes').value),domain=$('sessionDomain').value;if(!date||minutes<1||minutes>1440||!DOMAIN_BY_ID[domain])return toast('Confira data, duração e domínio.',true);state.sessions.push({id:`s-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,date,minutes,domain,notes:$('sessionNotes').value.trim()});save();$('sessionNotes').value='';renderAll();toast('Sessão registrada.');});
+$('mockForm').addEventListener('submit',e=>{e.preventDefault();const date=$('mockDate').value,score=Number($('mockScore').value);if(!date||!Number.isFinite(score)||score<0||score>100||$('mockScore').value==='')return toast('Informe uma porcentagem válida entre 0 e 100.',true);state.mocks.push({id:`m-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,date,score,notes:$('mockNotes').value.trim()});save();$('mockScore').value='';$('mockNotes').value='';renderAll();toast('Resultado registrado.');});
+$('themeBtn').addEventListener('click',()=>{state.theme=state.theme==='dark'?'light':'dark';save();applyTheme();});
+$('exportBtn').addEventListener('click',()=>{const payload={kind:'dcai-dashboard-backup',exportedAt:new Date().toISOString(),data:state};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`DCAI_300-640_backup_${localDay()}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Backup JSON exportado.');});
+$('importBtn').addEventListener('click',()=>$('fileInput').click());$('fileInput').addEventListener('change',async e=>{const file=e.target.files?.[0];e.target.value='';if(!file)return;if(file.size>3000000)return toast('Arquivo grande demais (máximo 3 MB).',true);try{const payload=JSON.parse(await file.text());if(payload.kind!=='dcai-dashboard-backup'||!payload.data||typeof payload.data!=='object'||Array.isArray(payload.data))throw new Error('formato incorreto');const v=payload.data;if(!v.topics||typeof v.topics!=='object'||!Array.isArray(v.sessions)||!Array.isArray(v.mocks))throw new Error('campos obrigatórios não encontrados');if(!confirm('Importar o backup e substituir o progresso salvo neste navegador?'))return;state={...initial(),...v,topics:v.topics,labs:v.labs&&typeof v.labs==='object'?v.labs:{},plan:v.plan&&typeof v.plan==='object'?v.plan:{},sessions:v.sessions,mocks:v.mocks};save();applyTheme();renderAll();toast('Backup importado com sucesso.');}catch(err){toast('Não foi possível importar: arquivo JSON de backup inválido.',true);}});
+applyTheme();renderAll();
+
+// Cloud state: one JSON document per authenticated user with optimistic locking.
+// Local state is always persisted first. Remote snapshots are never silently overwritten.
+let cloudClient=null, cloudUser=null, cloudRev=null, cloudBusy=false;
+let cloudReady=false, cloudUnresolved=false, cloudSaveTimer=null, cloudSaveQueued=false;
+let cloudRemotePending=null, cloudHasLoaded=false, cloudBooting=false;
+const cloudConfigured=()=>/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(SUPABASE_URL.trim())
+ && (SUPABASE_PUBLISHABLE_KEY.startsWith('sb_publishable_') || SUPABASE_PUBLISHABLE_KEY.startsWith('eyJ'));
+const cloudStateText=()=>JSON.stringify(state);
+const cloudStateFromData=data=>({ ...initial(),...data,
+ topics:(data&&data.topics&&typeof data.topics==='object'&&!Array.isArray(data.topics))?data.topics:{},
+ labs:(data&&data.labs&&typeof data.labs==='object'&&!Array.isArray(data.labs))?data.labs:{},
+ plan:(data&&data.plan&&typeof data.plan==='object'&&!Array.isArray(data.plan))?data.plan:{},
+ sessions:Array.isArray(data?.sessions)?data.sessions:[], mocks:Array.isArray(data?.mocks)?data.mocks:[] });
+const cloudHasProgress=o=>Boolean(Object.keys(o.topics||{}).length||Object.keys(o.labs||{}).length||Object.keys(o.plan||{}).length||o.sessions?.length||o.mocks?.length||o.examDate);
+function readCloudMeta(){try{return JSON.parse(localStorage.getItem(CLOUD_SYNC_META_KEY)||'null');}catch(e){return null;}}
+function writeCloudMeta(rev,snapshot){if(!cloudUser)return;try{localStorage.setItem(CLOUD_SYNC_META_KEY,JSON.stringify({userId:cloudUser.id,revision:rev,snapshot}));}catch(e){}}
+function cloudStatus(msg,kind='warn'){$('cloudStatus').textContent=msg;$('cloudStatus').dataset.state=kind;$('cloudAccountMessage').textContent=msg;}
+function cloudSection(section){for(const id of ['cloudNotConfigured','cloudLogin','cloudLoggedIn','cloudConflict']){$(id).hidden=id!==section;}}
+function cloudShow(section){cloudSection(section);if(!$('cloudDialog').open)$('cloudDialog').showModal();}
+function applyCloudState(data){state=cloudStateFromData(data);try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}applyTheme();renderAll();}
+function cloudSetSignedOut(){cloudUser=null;cloudReady=false;cloudRev=null;cloudUnresolved=false;cloudHasLoaded=false;cloudSaveQueued=false;clearTimeout(cloudSaveTimer);cloudStatus('Local · entre para sincronizar','warn');}
+function queueCloudSave(){
+ if(!cloudUser||!cloudReady||cloudUnresolved)return;
+ cloudSaveQueued=true;clearTimeout(cloudSaveTimer);
+ cloudSaveTimer=setTimeout(()=>void flushCloudSave(),1000);
+ cloudStatus('Alterações locais · aguardando nuvem','warn');
+}
+async function cloudRead(){
+ const {data,error}=await cloudClient.from(CLOUD_TABLE).select('data,revision,updated_at').eq('user_id',cloudUser.id).maybeSingle();
+ if(error)throw error;return data;
+}
+function cloudConflict(remote){cloudRemotePending=remote;cloudUnresolved=true;cloudReady=false;cloudStatus('Conflito · escolha qual progresso manter','warn');cloudShow('cloudConflict');}
+async function cloudAdoptRemote(remote){
+ const snapshot=cloudStateText();
+ applyCloudState(remote.data);
+ cloudRev=Number(remote.revision);writeCloudMeta(cloudRev,cloudStateText());cloudReady=true;cloudUnresolved=false;cloudRemotePending=null;cloudHasLoaded=true;
+ cloudStatus('☁ Progresso sincronizado','ok');
+ // Retaining older snapshot on this device is intentional only if choosing cloud explicitly.
+}
+async function cloudInsertCurrent(){
+ const snapshot=cloudStateText();
+ const {data,error}=await cloudClient.from(CLOUD_TABLE).insert({user_id:cloudUser.id,data:JSON.parse(snapshot),revision:1}).select('revision').single();
+ if(error)throw error;
+ cloudRev=Number(data.revision);writeCloudMeta(cloudRev,snapshot);cloudReady=true;cloudUnresolved=false;cloudHasLoaded=true;
+ cloudStatus('☁ Progresso sincronizado','ok');
+ if(cloudStateText()!==snapshot)queueCloudSave();
+}
+async function cloudLoad(){
+ if(!cloudClient||!cloudUser||cloudBooting)return;
+ cloudBooting=true;cloudReady=false;cloudStatus('☁ Verificando progresso na nuvem…','warn');
+ try{
+  const remote=await cloudRead();
+  if(!cloudUser)return;
+  if(!remote){try{await cloudInsertCurrent();}catch(e){if(e.code==='23505'){const latest=await cloudRead();if(latest)cloudConflict(latest);else throw e;}else throw e;}return;}
+  const localSnap=cloudStateText();const remoteSnap=JSON.stringify(cloudStateFromData(remote.data));const meta=readCloudMeta();
+  const sameAccount=meta?.userId===cloudUser.id;
+  if(localSnap===remoteSnap || !cloudHasProgress(state) || (sameAccount&&meta.snapshot===localSnap)){
+   await cloudAdoptRemote(remote);return;
+  }
+  if(sameAccount && Number(meta.revision)===Number(remote.revision)){
+   // Local changes recorded while offline; remote has not changed.
+   cloudRev=Number(remote.revision);cloudReady=true;cloudHasLoaded=true;cloudSaveQueued=true;
+   await flushCloudSave();return;
+  }
+  cloudConflict(remote);
+ }catch(e){cloudStatus('Nuvem indisponível · salvo localmente','error');console.error('Supabase cloud load:',e);toast('Não foi possível consultar a nuvem. Seus dados locais foram mantidos.',true);}
+ finally{cloudBooting=false;}
+}
+async function flushCloudSave(){
+ if(!cloudUser||!cloudReady||cloudBusy||cloudUnresolved||cloudRev===null)return;
+ cloudBusy=true;clearTimeout(cloudSaveTimer);cloudSaveQueued=false;let failed=false;
+ const snap=cloudStateText();const revisionAtStart=cloudRev;const userAtStart=cloudUser.id;
+ cloudStatus('☁ Salvando na nuvem…','warn');
+ try{
+  const {data,error}=await cloudClient.from(CLOUD_TABLE)
+   .update({data:JSON.parse(snap),revision:revisionAtStart+1})
+   .eq('user_id',userAtStart).eq('revision',revisionAtStart)
+   .select('revision').maybeSingle();
+  if(error)throw error;
+  if(!cloudUser||cloudUser.id!==userAtStart)return;
+  if(!data){cloudReady=false;const remote=await cloudRead();if(remote)cloudConflict(remote);else cloudStatus('Registro remoto ausente · tente novamente','error');return;}
+  cloudRev=Number(data.revision);writeCloudMeta(cloudRev,snap);
+  cloudStatus('☁ Salvo na nuvem','ok');
+ }catch(e){failed=true;cloudSaveQueued=true;cloudStatus('Offline ou erro · salvo neste navegador','error');console.error('Supabase cloud save:',e);}
+ finally{cloudBusy=false;if(!failed&&cloudUser&&cloudReady&&!cloudUnresolved&&(cloudSaveQueued||cloudStateText()!==snap))queueCloudSave();}
+}
+async function cloudRefresh(){
+ if(!cloudReady||!cloudUser||cloudBusy||cloudUnresolved||cloudSaveQueued)return;
+ try{
+  const remote=await cloudRead();if(!remote)return;
+  if(Number(remote.revision)===cloudRev)return;
+  const meta=readCloudMeta();if(meta?.userId===cloudUser.id && meta.snapshot===cloudStateText())await cloudAdoptRemote(remote);
+  else cloudConflict(remote);
+ }catch(e){cloudStatus('Sem conexão · dados locais preservados','error');}
+}
+async function initCloud(){
+ if(!cloudConfigured()){cloudStatus('Local · configuração Supabase pendente','warn');return;}
+ if(!window.supabase?.createClient){cloudStatus('Local · biblioteca Supabase indisponível','error');return;}
+ try{
+  cloudClient=window.supabase.createClient(SUPABASE_URL.trim().replace(/\/$/,''),SUPABASE_PUBLISHABLE_KEY.trim(),{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  cloudClient.auth.onAuthStateChange((event,session)=>{
+   const next=session?.user||null;
+   if(!next){cloudSetSignedOut();return;}
+   const identityChanged=!cloudUser||cloudUser.id!==next.id;
+   cloudUser=next;
+   if(identityChanged)setTimeout(()=>void cloudLoad(),50);
+  });
+  const {data,error}=await cloudClient.auth.getSession();if(error)throw error;
+  if(data.session?.user && !cloudUser){cloudUser=data.session.user;await cloudLoad();}
+  else if(!data.session?.user)cloudSetSignedOut();
+ }catch(e){console.error('Supabase init:',e);cloudStatus('Local · erro ao conectar ao Supabase','error');}
+}
+$('cloudBtn').addEventListener('click',()=>{
+ if(!cloudConfigured()||!cloudClient)cloudShow('cloudNotConfigured');
+ else if(cloudUnresolved)cloudShow('cloudConflict');
+ else if(cloudUser){$('cloudAccount').textContent=cloudUser.email||'Usuário autenticado';cloudShow('cloudLoggedIn');}
+ else cloudShow('cloudLogin');
+});
+$('cloudClose').addEventListener('click',()=>$('cloudDialog').close());
+$('cloudLogin').addEventListener('submit',async e=>{
+ e.preventDefault();if(!cloudClient)return;
+ const email=$('cloudEmail').value.trim();if(!email)return;
+ $('cloudSendLink').disabled=true;$('cloudLoginMessage').textContent='Solicitando acesso…';
+ try{
+  const redirectTo=location.origin+location.pathname;
+  const {error}=await cloudClient.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo,shouldCreateUser:true}});
+  if(error)throw error;$('cloudLoginMessage').textContent='Verifique seu e-mail e clique no link. Se não encontrar, confira o spam.';
+ }catch(err){$('cloudLoginMessage').textContent='Erro: '+(err.message||'verifique a configuração do Supabase e a URL de redirecionamento.');}
+ finally{$('cloudSendLink').disabled=false;}
+});
+$('cloudSyncNow').addEventListener('click',async()=>{
+ if(!cloudUser)return;$('cloudDialog').close();
+ if(!cloudReady)await cloudLoad();else{await cloudRefresh();if(cloudReady){cloudSaveQueued=true;await flushCloudSave();}}
+});
+$('cloudLogout').addEventListener('click',async()=>{if(!cloudClient)return;await cloudClient.auth.signOut();cloudSetSignedOut();$('cloudDialog').close();toast('Você saiu da conta; dados locais permanecem neste navegador.');});
+$('cloudKeepRemote').addEventListener('click',async()=>{if(!cloudRemotePending)return;await cloudAdoptRemote(cloudRemotePending);$('cloudDialog').close();toast('Progresso da nuvem carregado.');});
+$('cloudKeepLocal').addEventListener('click',async()=>{
+ if(!cloudRemotePending||!cloudUser)return;
+ if(!confirm('ATENÇÃO: isto substituirá o progresso existente na nuvem pelos dados deste navegador. Recomendamos exportar backup antes. Continuar?'))return;
+ const remote=cloudRemotePending;cloudRemotePending=null;cloudUnresolved=false;cloudReady=true;cloudRev=Number(remote.revision);cloudSaveQueued=true;
+ $('cloudDialog').close();await flushCloudSave();toast('Envio solicitado. Confira o indicador da nuvem.');
+});
+function cloudWake(){
+ if(!cloudUser||cloudUnresolved)return;
+ if(!cloudReady)void cloudLoad();
+ else if(cloudSaveQueued)void flushCloudSave();
+ else void cloudRefresh();
+}
+window.addEventListener('online',cloudWake);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)cloudWake();});
+setInterval(()=>{if(!document.hidden)cloudWake();},45000);
+window.addEventListener('load',()=>void initCloud(),{once:true});
+
+</script>
+</body>
+</html>
